@@ -1,0 +1,107 @@
+<HTML>
+<HEAD>
+  <META http-equiv=Content-Type content="text/html; charset=utf-8">
+  <TITLE>QuoInsight</TITLE>
+  <LINK REL=stylesheet HREF="styles.css" TYPE="text/css"/>
+  <SCRIPT LANGUAGE=JavaScript>/*make javascript as default*/</SCRIPT>
+  <STYLE>
+    .pts {cursor:hand; color:#0000FF}
+  </STYLE>
+  <BASE TARGET0="_blank">
+</HEAD>
+<BODY>
+
+<table class="topmenu" width="100%" height="28" cellpadding="0" cellspacing="0">
+  <tbody><tr><td nowrap="">
+    &nbsp; <a class="href" id="menu1" style="color:#000000;" title="#"><b>main</b></a>
+    &nbsp; | &nbsp;
+    <a class="href" id="menu99" style="color:#003366;" target="_blank" href="https://gist.github.com/quoinsight" title="gist">gist</a>
+    &nbsp; | &nbsp; 
+  </td></tr></tbody>
+</table>
+
+<TABLE border=0 width='100%' height='80%' CELLSPACING=3 CELLPADDING=0 style='margin:0;padding:0;border:0'>
+<TR height='100%'>
+ <TD>
+  <!--IFRAME id=chr1 src='about:blank' width='100%' height='100%' 
+   style='margin:0;padding:0;border:0'></IFRAME-->
+  <textarea id=console style='font-family:tahoma;width:100%;height:100%;'></textarea>
+<TR>
+ <TD nowrap>
+  <script><!--
+    var shortcuts = {
+      "g": "http://www.google.com/webhp",
+      "b": "about:blank"
+    }
+
+    function trim(myString) {   
+      return myString.replace(/^\s*/, '').replace(/\s*$/, '');;
+    }
+
+    //http://www.tek-tips.com/userinfo.cfm?member=MikeyJudd
+    function keypressed(thisField, e) {
+      var charCode;
+      if ( e && e.which ) {
+        charCode = e.which;
+      } else if ( window.event ) {
+        e = window.event;
+        charCode = e.keyCode;
+      }
+      if ( charCode==38 ) {
+        thisField.value = thisField.lastValue;
+        return;
+      } else if (charCode==13 && thisField.id=="cmdline") {
+        var cmd = trim(thisField.value);
+        var con = document.all.console;
+        thisField.lastValue = cmd;
+        con.value += "> " + cmd;
+        if ( cmd=="" ) {
+          //OK
+        } else if ( cmd.charAt(0)=="!" ) {
+          con.value += " [ok]";
+          cmd = cmd.substr(1, cmd.length-1);
+          try {eval(cmd)} catch(e) {alert(cmd+" ["+e.description+"]")}
+        } else {
+          cmd = cmd.toLowerCase()
+          if ( cmd=="cls"||cmd=="clear" ) {
+            con.value = "";
+          } else if ( cmd=="ls"||cmd=="?"||cmd=="help" ) {
+            for (var cmd in shortcuts) {
+              con.value += "\n" + cmd + ": " + shortcuts[cmd];
+            }          
+          } else {
+            if (cmd.indexOf("cd ")==0) {
+              cmd = cmd.substr(3, cmd.length-3);
+            } else if (cmd=="."||cmd==".."||cmd=="/"||cmd=="../") {
+              //OK
+            } else {
+              cmd = shortcuts[cmd];
+            }
+            if ( cmd==undefined ) {
+              con.value += " [?]";
+            } else {
+              con.value += " [ok]";
+              if ( cmd.indexOf("javascript")==0 ) {
+                w = window.open(cmd, "", "height=0,width=0,top=1,left="+screen.width);
+              } else {
+                window.open(cmd);
+              }
+            }
+          }
+        }
+        if (con.value!="") con.value += "\n";
+        con.scrollTop = con.scrollHeight;
+        thisField.value = "";
+      }
+    }
+  //--></script>
+  <input id=cmdline type=text style='font-family:fixedsys;width:100%;'
+   onkeyup="keypressed(this,event)" lastValue="">
+</TABLE>
+<br>
+<p align=right>
+[<a href="http://www.google.com/search?q=site%3Aquoinsight.github.io">google</a>]
+<a href="https://pages.github.com/" target="_blank"><img border="0" height="30" alt="GitHub Pages" src="https://pages.github.com/favicon.ico"/></a>
+</p>
+</BODY>
+</HTML>
